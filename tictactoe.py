@@ -1,3 +1,6 @@
+from random import randrange
+from random import choice as rchoice
+
 # game board
 board = ["-", "-", "-",
          "-", "-", "-",
@@ -12,21 +15,75 @@ winner = None
 # Who's turn?
 current_player = "X"
 
+# coop = false ai = true
+type_of_game = False
+
+
+# setup two player or AI?
+def choice():
+    decision = input("Type '1' to play against an AI or '2' for two-player ")
+    decision = int(decision)
+    if decision == 1:
+        start_game_ai()
+    elif decision == 2:
+        start_game_coop()
+
 
 # function to display board
 def display_board():
     print(board[0] + " | " + board[1] + " | " + board[2])
     print(board[3] + " | " + board[4] + " | " + board[5])
     print(board[6] + " | " + board[7] + " | " + board[8])
+    print('\n')
 
 
-# start game
-def start_game():
+# start game ai
+def start_game_ai():
     # display board
     display_board()
     while continue_game:
         # handle turn for single player
         handle_turn(current_player)
+        # check if game is over
+        check_if_game_over()
+        # flip to ai
+        flip_player()
+        # handle turn for ai
+        handle_turn_ai(current_player)
+        # display board
+        display_board()
+        # check if game is over
+        check_if_game_over()
+        # flip to player
+        flip_player()
+
+    # game is over
+    if winner == "X" or winner == "O":
+        print(winner + " won!")
+    elif winner == None:
+        print("Tie :(")
+
+
+def handle_turn_ai(player):
+    number_list = list(range(9))
+    valid = True
+    while valid:
+        choice_ai = rchoice(number_list)
+        number_list.remove(choice_ai)
+        if board[choice_ai] == "-":
+            valid = False
+    board[choice_ai] = player
+
+
+# start game coop
+def start_game_coop():
+    # display board
+    display_board()
+    while continue_game:
+        # handle turn for single player
+        handle_turn(current_player)
+        # display board
+        display_board()
         # check if game is over
         check_if_game_over()
         # flip to other player
@@ -57,7 +114,6 @@ def handle_turn(player):
             valid = True
 
     board[position] = player
-    display_board()
 
 
 def check_if_game_over():
@@ -142,6 +198,7 @@ def check_if_tie():
 
 
 def flip_player():
+    print('\n')
     global current_player
     # if current player is X change to O
     if current_player == "X":
@@ -154,4 +211,4 @@ def flip_player():
 
 
 # starts game !!
-start_game()
+choice()
