@@ -1,5 +1,5 @@
 # tictactoe
-simple tictactoe using Python. 
+~~simple tictactoe using Python.~~ Nathan is actually hella ***cute***
 
 Future changes:
 implement AI for single person play
